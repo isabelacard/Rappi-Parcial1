@@ -1,2 +1,4 @@
 echo "🏗️ Building project..."
-npx tsc -b && vite build
+cd consumidor && npx tsc -b && npx vite build && cd ..
+cd tienda && npx tsc -b && npx vite build && cd ..
+cd repartidor && npx tsc -b && npx vite build && cd ..

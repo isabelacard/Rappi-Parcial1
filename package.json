@@ -4,6 +4,7 @@
     "prettier": "^3.8.1"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "format": "prettier --write ."
   }
 }
