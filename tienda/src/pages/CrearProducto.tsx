@@ -10,7 +10,6 @@ export default function CrearProducto() {
 
     const handleCrear = () => {
         console.log({ nombre, descripcion, precio });
-        // aquí llamarás a productos.service.ts
         navigate("/mi-tienda");
     };
 
