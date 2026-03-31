@@ -1,16 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import logo from "../assets/logo.png";
+import { createProducto } from "../services/productos.service";
+
+const ID_TIENDA = 1;
 
 export default function CrearProducto() {
     const navigate = useNavigate();
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [precio, setPrecio] = useState("");
+    const [error, setError] = useState("");
 
-    const handleCrear = () => {
-        console.log({ nombre, descripcion, precio });
-        navigate("/mi-tienda");
+    const handleCrear = async () => {
+        try {
+            setError("");
+            await createProducto(nombre, descripcion, Number(precio), ID_TIENDA);
+            navigate("/mi-tienda");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "No se pudo crear el producto");
+        }
     };
 
     return (
@@ -77,6 +86,8 @@ export default function CrearProducto() {
                     >
                         Crear producto →
                     </button>
+
+                    {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
                 </div>
             </div>
         </div>
