@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router";
 import logo from "../assets/logo.png";
-
-const tiendas = [
-    { id: 1, nombre: "Burger House", descripcion: "Hamburguesas artesanales", estado: "abierta", emoji: "🍔" },
-    { id: 2, nombre: "Sushi Cali", descripcion: "Sushi y comida japonesa", estado: "cerrada", emoji: "🍣" },
-    { id: 3, nombre: "Pizza Express", descripcion: "Pizzas rápidas y económicas", estado: "abierta", emoji: "🍕" },
-];
+import { useEffect, useState } from "react";
+import { getTiendas } from "../services/tiendas.service";
+import type { Tienda } from "../types";
 
 export default function Tiendas() {
     const navigate = useNavigate();
+    const [tiendas, setTiendas] = useState<Tienda[]>([]);
+
+    useEffect(() => {
+        getTiendas().then((data) => {
+            if (data) setTiendas(data);
+        });
+    }, []);
 
     return (
         <div className="min-h-screen bg-white">
@@ -22,19 +26,18 @@ export default function Tiendas() {
                 </button>
             </div>
 
-            {/* Contenido */}
             <div className="px-8 py-6">
                 <p className="text-zinc-400 text-sm mb-6">{tiendas.filter((t) => t.estado === "abierta").length} tiendas disponibles</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {tiendas.map((tienda) => (
                         <div
-                            key={tienda.id}
-                            onClick={() => tienda.estado === "abierta" && navigate(`/tiendas/${tienda.id}`)}
+                            key={tienda.id_tienda}
+                            onClick={() => tienda.estado === "abierta" && navigate(`/tiendas/${tienda.id_tienda}`)}
                             className={`rounded-2xl border p-6 flex flex-col gap-3 transition-all
-                                ${tienda.estado === "abierta" ? "border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 cursor-pointer" : "border-gray-100 opacity-50 cursor-not-allowed"}`}
+                            ${tienda.estado === "abierta" ? "border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 cursor-pointer" : "border-gray-100 opacity-50 cursor-not-allowed"}`}
                         >
-                            <div className="text-5xl">{tienda.emoji}</div>
+                            <div className="text-5xl">🏪</div>
                             <div>
                                 <div className="flex items-center gap-2">
                                     <h2 className="text-zinc-800 font-black text-lg">{tienda.nombre}</h2>

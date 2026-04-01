@@ -1,12 +1,14 @@
 import { useState } from "react";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = () => {
-        console.log({ email, password });
+        navigate("/tiendas");
     };
 
     return (
