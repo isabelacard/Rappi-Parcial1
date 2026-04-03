@@ -18,12 +18,17 @@ export default function Tiendas() {
         <div className="min-h-screen bg-white">
             <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-8 flex items-center justify-between">
                 <img src={logo} alt="Logo" className="h-8 object-contain" />
-                <h1 className="text-2xl font-black text-zinc-800">
+                <h1 className="text-2xl pl-50 font-black text-zinc-800">
                     ¿Qué quieres <span className="text-[#fd6250]">hoy?</span> ヾ(•ω•`)o
                 </h1>
-                <button onClick={() => navigate("/mis-ordenes")} className="text-sm text-[#fd6250] font-semibold hover:underline cursor-pointer">
-                    Mis órdenes
-                </button>
+                <div className="flex items-center gap-10">
+                    <button onClick={() => navigate("/mis-ordenes")} className="text-sm text-[#fd6250] font-semibold hover:underline cursor-pointer">
+                        Mis órdenes
+                    </button>
+                    <button onClick={() => (window.location.href = "http://localhost:5175")} className="bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 text-white font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
+                        Cerrar sesión
+                    </button>
+                </div>
             </div>
 
             <div className="px-8 py-6">

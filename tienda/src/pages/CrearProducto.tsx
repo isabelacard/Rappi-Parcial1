@@ -25,12 +25,11 @@ export default function CrearProducto() {
     return (
         <div className="min-h-screen bg-white">
             {/* Navbar */}
-            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-4 flex items-center justify-between">
+            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-8 flex items-center justify-between">
                 <button onClick={() => navigate(-1)} className="text-sm text-zinc-500 hover:text-[#fd6250] transition cursor-pointer">
                     ← Volver
                 </button>
                 <img src={logo} alt="Logo" className="h-8 object-contain" />
-                <h1 className="text-lg font-black text-zinc-800">Nuevo producto 🍽️</h1>
             </div>
 
             <div className="max-w-md mx-auto px-6 py-8">
