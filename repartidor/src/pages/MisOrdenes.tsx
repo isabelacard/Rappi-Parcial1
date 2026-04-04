@@ -6,7 +6,7 @@ import type { Orden } from "../types";
 
 const fmt = (n: number) => `$${n.toLocaleString("es-CO")}`;
 
-const ID_REPARTIDOR = 3;
+const ID_REPARTIDOR = 1;
 
 export default function MisOrdenes() {
     const navigate = useNavigate();

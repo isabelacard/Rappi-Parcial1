@@ -6,13 +6,15 @@ import type { Orden } from "../types";
 
 const fmt = (n: number) => `$${n.toLocaleString("es-CO")}`;
 
-const ID_REPARTIDOR = 3;
+const ID_REPARTIDOR = 1;
 
 export default function DetalleOrden() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [orden, setOrden] = useState<Orden | null>(null);
     const [aceptada, setAceptada] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         getOrdenById(Number(id)).then((data) => {
@@ -25,14 +27,24 @@ export default function DetalleOrden() {
     const total = orden.productos.reduce((acc, p) => acc + p.precio * p.cantidad, 0);
 
     const handleAceptar = async () => {
-        await aceptarOrden(Number(id), ID_REPARTIDOR);
-        setAceptada(true);
-        setTimeout(() => navigate("/mis-ordenes"), 1500);
+        if (loading) return;
+
+        try {
+            setLoading(true);
+            setError("");
+            await aceptarOrden(Number(id), ID_REPARTIDOR);
+            setAceptada(true);
+            setTimeout(() => navigate("/mis-ordenes"), 1500);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "No se pudo aceptar la orden");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="min-h-screen bg-white">
-            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-4 flex items-center justify-between">
+            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-8 flex items-center justify-between">
                 <button onClick={() => navigate(-1)} className="text-sm text-zinc-500 hover:text-[#fd6250] transition cursor-pointer">
                     ← Volver
                 </button>
@@ -81,10 +93,16 @@ export default function DetalleOrden() {
                 {aceptada ? (
                     <div className="w-full bg-green-100 text-green-600 font-bold py-4 rounded-2xl text-center">✅ Orden aceptada, redirigiendo...</div>
                 ) : (
-                    <button onClick={handleAceptar} className="w-full bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-[#fd6250]/30 cursor-pointer">
-                        Aceptar orden →
+                    <button
+                        onClick={handleAceptar}
+                        disabled={loading}
+                        className="w-full bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-[#fd6250]/30 cursor-pointer"
+                    >
+                        {loading ? "Aceptando..." : "Aceptar orden →"}
                     </button>
                 )}
+
+                {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
             </div>
         </div>
     );

@@ -18,7 +18,20 @@ export const aceptarOrden = async (id_orden: number, id_repartidor: number) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_repartidor }),
     });
-    const data = await res.json();
+
+    let data: { orden?: unknown; error?: string } = {};
+    const raw = await res.text();
+
+    try {
+        data = raw ? JSON.parse(raw) : {};
+    } catch {
+        data = { error: raw || "Respuesta invalida del servidor" };
+    }
+
+    if (!res.ok) {
+        throw new Error(data.error || `No se pudo aceptar la orden (HTTP ${res.status})`);
+    }
+
     return data.orden;
 };
 

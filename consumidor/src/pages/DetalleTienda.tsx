@@ -33,7 +33,7 @@ export default function DetalleTienda() {
 
     return (
         <div className="min-h-screen bg-white">
-            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-4 flex items-center justify-between">
+            <div className="bg-white border-b border-gray-100 shadow-sm px-8 py-8 flex items-center justify-between">
                 <button onClick={() => navigate("/tiendas")} className="text-sm text-zinc-500 hover:text-[#fd6250] transition cursor-pointer">
                     ← Volver
                 </button>
