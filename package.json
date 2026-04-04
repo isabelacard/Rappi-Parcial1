@@ -1,10 +1,12 @@
 {
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "husky": "^9.1.7",
     "prettier": "^3.8.1"
   },
   "scripts": {
     "prepare": "husky",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev": "concurrently -k -n SERVER,GENERAL,CONSUMIDOR,TIENDA,REPARTIDOR -c red,cyan,green,yellow,magenta \"npm run dev --prefix server\" \"npm run dev --prefix general\" \"npm run dev --prefix consumidor\" \"npm run dev --prefix tienda\" \"npm run dev --prefix repartidor\""
   }
 }
