@@ -47,7 +47,7 @@ export default function MiTienda() {
                     <button onClick={() => navigate("/crear-producto")} className="text-sm text-[#fd6250] font-semibold hover:underline cursor-pointer">
                         +producto
                     </button>
-                    <button onClick={() => (window.location.href = "http://localhost:5175")} className="bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 text-white font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
+                    <button onClick={() => (window.location.href = "https://rappi-general.onrender.com")} className="bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 text-white font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
                         Cerrar sesión
                     </button>
                 </div>
