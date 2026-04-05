@@ -6,7 +6,7 @@ services:
     buildCommand: npm install
     startCommand: npm start
 
-  - type: static
+  - type: web
     name: rappi-general
     runtime: static
     rootDir: general
@@ -17,7 +17,7 @@ services:
         source: /*
         destination: /index.html
 
-  - type: static
+  - type: web
     name: rappi-consumidor
     runtime: static
     rootDir: consumidor
@@ -28,7 +28,7 @@ services:
         source: /*
         destination: /index.html
 
-  - type: static
+  - type: web
     name: rappi-tienda
     runtime: static
     rootDir: tienda
@@ -39,7 +39,7 @@ services:
         source: /*
         destination: /index.html
 
-  - type: static
+  - type: web
     name: rappi-repartidor
     runtime: static
     rootDir: repartidor

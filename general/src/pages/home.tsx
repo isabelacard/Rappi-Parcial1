@@ -1,24 +1,28 @@
 import logo from "../assets/logo.png";
 
+const CONSUMIDOR_URL = import.meta.env.VITE_CONSUMIDOR_URL ?? "http://localhost:5174";
+const TIENDA_URL = import.meta.env.VITE_TIENDA_URL ?? "http://localhost:5176";
+const REPARTIDOR_URL = import.meta.env.VITE_REPARTIDOR_URL ?? "http://localhost:5173";
+
 export default function Home() {
     const opciones = [
         {
             titulo: "Consumidor",
             descripcion: "Pide tu comida favorita",
             emoji: "🛒",
-            url: "http://localhost:5174",
+            url: CONSUMIDOR_URL,
         },
         {
             titulo: "Tienda",
             descripcion: "Administra tu restaurante",
             emoji: "🏪",
-            url: "http://localhost:5176",
+            url: TIENDA_URL,
         },
         {
             titulo: "Repartidor",
             descripcion: "Gestiona tus entregas",
             emoji: "🛵",
-            url: "http://localhost:5173",
+            url: REPARTIDOR_URL,
         },
     ];
 
