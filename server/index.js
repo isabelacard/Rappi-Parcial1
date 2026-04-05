@@ -11,6 +11,18 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.status(200).json({
+        ok: true,
+        service: "rappi-server",
+        message: "API running",
+    });
+});
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ ok: true });
+});
+
 app.use("/tiendas", TiendasRouter);
 app.use("/productos", ProductosRouter);
 app.use("/carrito", CarritoRouter);
