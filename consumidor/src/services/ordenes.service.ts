@@ -1,4 +1,4 @@
-const API = "http://localhost:3000";
+const API = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
 export const getOrdenesByUsuario = async (id_usuario: number) => {
     const res = await fetch(`${API}/ordenes/usuario/${id_usuario}`);
