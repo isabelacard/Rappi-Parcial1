@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: rappi-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+
+  - type: static
+    name: rappi-general
+    runtime: static
+    rootDir: general
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: static
+    name: rappi-consumidor
+    runtime: static
+    rootDir: consumidor
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: static
+    name: rappi-tienda
+    runtime: static
+    rootDir: tienda
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  - type: static
+    name: rappi-repartidor
+    runtime: static
+    rootDir: repartidor
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
