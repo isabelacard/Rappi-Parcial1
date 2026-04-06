@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import logo from "../assets/logo.png";
-import { getCarrito, vaciarCarrito } from "../services/carrito.service";
+import { getCarrito } from "../services/carrito.service";
 import { createOrden } from "../services/ordenes.service";
 import type { ItemCarrito } from "../types";
 
@@ -15,6 +15,8 @@ export default function Checkout() {
     const [direccion, setDireccion] = useState("");
     const [metodo, setMetodo] = useState<"Tarjeta" | "Efectivo">("Tarjeta");
     const [carrito, setCarrito] = useState<ItemCarrito[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         getCarrito(ID_USUARIO).then((data) => {
@@ -25,14 +27,23 @@ export default function Checkout() {
     const total = carrito.reduce((acc, p) => acc + Number(p.precio) * p.cantidad, 0);
 
     const handleOrden = async () => {
+        if (loading) return;
+
         const productos = carrito.map((p) => ({
             id_producto: p.id_producto,
             cantidad: p.cantidad,
         }));
-        console.log("ENVIANDO:", { ID_USUARIO, ID_TIENDA, direccion, metodo, productos });
-        await createOrden(ID_USUARIO, ID_TIENDA, direccion, metodo, productos);
-        await vaciarCarrito(ID_USUARIO);
-        navigate("/mis-ordenes");
+
+        try {
+            setLoading(true);
+            setError("");
+            await createOrden(ID_USUARIO, ID_TIENDA, direccion, metodo, productos);
+            navigate("/mis-ordenes");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "No se pudo confirmar la orden");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -94,11 +105,13 @@ export default function Checkout() {
 
                 <button
                     onClick={handleOrden}
-                    disabled={!direccion || carrito.length === 0}
+                    disabled={!direccion || carrito.length === 0 || loading}
                     className="w-full bg-[#fd6250] hover:bg-[#ff7a6a] active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-[#fd6250]/30 cursor-pointer"
                 >
-                    Confirmar orden →
+                    {loading ? "Confirmando..." : "Confirmar orden →"}
                 </button>
+
+                {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
             </div>
         </div>
     );

@@ -1,3 +1,5 @@
+import type { OrdenResponse } from "../types";
+
 const API = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
 export const getOrdenesByUsuario = async (id_usuario: number) => {
@@ -12,6 +14,11 @@ export const createOrden = async (id_usuario: number, id_tienda: number, direcci
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id_usuario, id_tienda, direccion_entrega, metodo_pago, productos }),
     });
-    const data = await res.json();
+    const data = (await res.json()) as OrdenResponse;
+
+    if (!res.ok) {
+        throw new Error(data?.error ?? "No se pudo crear la orden");
+    }
+
     return data.orden;
 };

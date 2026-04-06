@@ -29,3 +29,8 @@ export type Orden = {
     metodo_pago: string;
     productos: { nombre: string; cantidad: number; precio: number }[];
 };
+
+export type OrdenResponse = {
+    error?: string;
+    orden?: unknown;
+};
