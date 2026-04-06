@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import logo from "../assets/logo.png";
-import { getCarrito } from "../services/carrito.service";
+import { getCarrito, vaciarCarrito } from "../services/carrito.service";
 import { createOrden } from "../services/ordenes.service";
 import type { ItemCarrito } from "../types";
 
@@ -31,6 +31,7 @@ export default function Checkout() {
         }));
         console.log("ENVIANDO:", { ID_USUARIO, ID_TIENDA, direccion, metodo, productos });
         await createOrden(ID_USUARIO, ID_TIENDA, direccion, metodo, productos);
+        await vaciarCarrito(ID_USUARIO);
         navigate("/mis-ordenes");
     };
 

@@ -10,5 +10,6 @@ const router = express.Router();
 router.get("/:id_usuario", controller.getCarrito);
 router.post("/:id_usuario", controller.agregarProducto);
 router.delete("/:id_usuario/:id_producto", controller.eliminarProducto);
+router.delete("/:id_usuario", controller.vaciarCarrito);
 
 export default router;

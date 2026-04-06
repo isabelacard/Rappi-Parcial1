@@ -34,4 +34,14 @@ export class CarritoController {
             res.status(500).send({ error: error.message });
         }
     };
+
+    vaciarCarrito = async (req, res) => {
+        try {
+            const id_usuario = Number(req.params.id_usuario);
+            const result = await this.repository.vaciarCarrito(id_usuario);
+            res.send(result);
+        } catch (error) {
+            res.status(500).send({ error: error.message });
+        }
+    };
 }

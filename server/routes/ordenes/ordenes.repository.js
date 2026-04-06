@@ -84,18 +84,37 @@ export class OrdenesRepository {
         return agruparOrdenesConProductos(result.rows)[0] ?? null;
     };
 
-    createOrden = async (id_usuario, id_tienda, direccion_entrega, metodo_pago, productos) => {
+    createOrden = async (id_usuario, id_tienda, direccion_entrega, metodo_pago, _productos) => {
         const client = await pool.connect();
 
         try {
             await client.query("BEGIN");
 
+            const productosEnCarrito = await client.query(
+                `SELECT cp.id_producto, SUM(cp.cantidad)::int AS cantidad
+                 FROM carrito c
+                 JOIN carrito_products cp ON c.id_carrito = cp.id_carrito
+                 WHERE c.id_usuario = $1
+                 GROUP BY cp.id_producto`,
+                [id_usuario]
+            );
+
+            if (productosEnCarrito.rows.length === 0) {
+                throw new Error("El carrito esta vacio");
+            }
+
             const orden = await client.query("INSERT INTO ordenes (id_usuario, id_tienda, direccion_entrega, metodo_pago, estado) VALUES ($1, $2, $3, $4, 'pendiente') RETURNING *", [id_usuario, id_tienda, direccion_entrega, metodo_pago]);
             const id_orden = orden.rows[0].id_orden;
 
-            for (const p of productos) {
-                await client.query("INSERT INTO orden_productos (id_orden, id_producto, cantidad) VALUES ($1, $2, $3)", [id_orden, p.id_producto, p.cantidad]);
-            }
+            await client.query(
+                `INSERT INTO orden_productos (id_orden, id_producto, cantidad)
+                 SELECT $1, cp.id_producto, SUM(cp.cantidad)::int
+                 FROM carrito c
+                 JOIN carrito_products cp ON c.id_carrito = cp.id_carrito
+                 WHERE c.id_usuario = $2
+                 GROUP BY cp.id_producto`,
+                [id_orden, id_usuario]
+            );
 
             await client.query("DELETE FROM carrito_products WHERE id_carrito IN (SELECT id_carrito FROM carrito WHERE id_usuario = $1)", [id_usuario]);
 

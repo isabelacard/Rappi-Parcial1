@@ -23,3 +23,10 @@ export const eliminarProducto = async (id_usuario: number, id_producto: number) 
     const data = await res.json();
     return data.item;
 };
+
+export const vaciarCarrito = async (id_usuario: number) => {
+    const res = await fetch(`${API}/carrito/${id_usuario}`, {
+        method: "DELETE",
+    });
+    return res.json();
+};
